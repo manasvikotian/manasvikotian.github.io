@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manasvi R Kotian — Backend & Computer Vision Engineer</title>
+<meta name="description" content="Portfolio of Manasvi R Kotian — backend & computer-vision engineer building airport-automation and optimization systems." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0a0b1a; --bg2:#0f1228; --card:rgba(255,255,255,.04);
+    --border:rgba(255,255,255,.09); --text:#e8eaf6; --muted:#9aa0c3;
+    --accent:#7c5cff; --accent2:#ff5ca8; --accent3:#22d3ee;
+    --grad:linear-gradient(120deg,#7c5cff 0%,#ff5ca8 55%,#22d3ee 120%);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:80px}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
+  h1,h2,h3,.mono{font-family:'Space Grotesk','Inter',sans-serif}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+  /* animated background blobs */
+  .bg-orbs{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+  .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.45;animation:float 18s ease-in-out infinite}
+  .orb.a{width:480px;height:480px;background:#7c5cff;top:-120px;left:-80px}
+  .orb.b{width:420px;height:420px;background:#ff5ca8;top:30%;right:-120px;animation-delay:-6s}
+  .orb.c{width:360px;height:360px;background:#22d3ee;bottom:-120px;left:30%;animation-delay:-12s}
+  @keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,-30px) scale(1.1)}}
+
+  /* nav */
+  header.nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(12px);background:rgba(10,11,26,.6);border-bottom:1px solid transparent;transition:.3s}
+  header.nav.scrolled{border-bottom:1px solid var(--border);background:rgba(10,11,26,.85)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .logo{font-family:'Space Grotesk';font-weight:700;font-size:1.15rem;letter-spacing:.5px}
+  .logo span{color:var(--accent2)}
+  .nav-links{display:flex;gap:28px;align-items:center}
+  .nav-links a{color:var(--muted);font-size:.92rem;font-weight:500;transition:.2s;position:relative}
+  .nav-links a:hover,.nav-links a.active{color:var(--text)}
+  .nav-links a::after{content:'';position:absolute;left:0;bottom:-6px;height:2px;width:0;background:var(--grad);transition:.25s}
+  .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:0;padding:6px}
+  .burger span{width:24px;height:2px;background:var(--text);transition:.3s}
+
+  /* hero */
+  .hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;padding-top:66px}
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border:1px solid var(--border);border-radius:100px;background:var(--card);font-size:.82rem;color:var(--muted);margin-bottom:26px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#22d3ee;box-shadow:0 0 10px #22d3ee}
+  .hero h1{font-size:clamp(2.6rem,7vw,5rem);font-weight:700;line-height:1.05;letter-spacing:-1.5px}
+  .hero .role{font-size:clamp(1.1rem,2.6vw,1.6rem);color:var(--muted);margin-top:18px;font-weight:500}
+  .hero p.blurb{max-width:640px;margin-top:22px;color:var(--muted);font-size:1.05rem}
+  .cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:13px 24px;border-radius:12px;font-weight:600;font-size:.95rem;transition:.25s;border:1px solid var(--border)}
+  .btn.primary{background:var(--grad);color:#fff;border:0;background-size:200% auto}
+  .btn.primary:hover{background-position:right center;transform:translateY(-2px);box-shadow:0 12px 30px rgba(124,92,255,.35)}
+  .btn.ghost{background:var(--card);color:var(--text)}
+  .btn.ghost:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .socials{display:flex;gap:16px;margin-top:30px}
+  .socials a{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--border);border-radius:12px;color:var(--muted);transition:.25s}
+  .socials a:hover{color:#fff;border-color:var(--accent2);transform:translateY(-3px)}
+
+  /* sections */
+  section.block{position:relative;z-index:1;padding:90px 0}
+  .eyebrow{font-family:'Space Grotesk';text-transform:uppercase;letter-spacing:3px;font-size:.78rem;color:var(--accent2);font-weight:600;margin-bottom:12px}
+  .sec-title{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:-.5px;margin-bottom:14px}
+  .lead{color:var(--muted);max-width:680px;font-size:1.05rem}
+
+  /* about stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px}
+  .stat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+  .stat .num{font-family:'Space Grotesk';font-size:2rem;font-weight:700}
+  .stat .lbl{color:var(--muted);font-size:.86rem;margin-top:4px}
+
+  /* projects */
+  .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:44px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px;transition:.3s;position:relative;overflow:hidden}
+  .card::before{content:'';position:absolute;inset:0;background:var(--grad);opacity:0;transition:.3s;z-index:0}
+  .card:hover{transform:translateY(-6px);border-color:transparent}
+  .card:hover::before{opacity:.10}
+  .card>*{position:relative;z-index:1}
+  .card .tag-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .kind{font-size:.74rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent3);font-weight:600}
+  .card h3{font-size:1.3rem;margin-bottom:10px}
+  .card p{color:var(--muted);font-size:.96rem}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .chip{font-size:.78rem;padding:5px 11px;border-radius:8px;background:rgba(124,92,255,.13);border:1px solid rgba(124,92,255,.25);color:#cdbcff}
+  .metric{display:inline-block;margin-top:16px;font-family:'Space Grotesk';font-weight:600;font-size:.9rem;color:var(--accent2)}
+
+  /* timeline */
+  .timeline{margin-top:44px;position:relative;padding-left:28px}
+  .timeline::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--accent),var(--accent2),var(--accent3))}
+  .tl-item{position:relative;padding-bottom:34px}
+  .tl-item::before{content:'';position:absolute;left:-28px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--accent2)}
+  .tl-item .when{font-size:.8rem;color:var(--accent3);font-weight:600;letter-spacing:1px}
+  .tl-item h3{font-size:1.15rem;margin:4px 0 2px}
+  .tl-item .org{color:var(--muted);font-size:.92rem;margin-bottom:8px}
+  .tl-item ul{color:var(--muted);font-size:.94rem;padding-left:18px}
+  .tl-item li{margin-bottom:4px}
+
+  /* skills */
+  .skill-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:44px}
+  .skill-cat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px}
+  .skill-cat h4{font-family:'Space Grotesk';font-size:1rem;margin-bottom:14px;color:#fff}
+  .skill-cat .chips .chip{background:rgba(255,255,255,.05);border-color:var(--border);color:var(--text)}
+
+  /* publication */
+  .pub{margin-top:40px;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent2);border-radius:14px;padding:24px}
+  .pub .kind{color:var(--accent2)}
+  .pub h3{font-size:1.1rem;margin:6px 0}
+  .pub p{color:var(--muted);font-size:.9rem}
+
+  /* contact */
+  .contact{text-align:center}
+  .contact .btn{margin-top:24px}
+  footer{position:relative;z-index:1;text-align:center;padding:40px 0;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border)}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:820px){
+    .nav-links{position:fixed;inset:66px 0 auto 0;flex-direction:column;background:rgba(10,11,26,.97);padding:24px;gap:20px;transform:translateY(-140%);transition:.35s;border-bottom:1px solid var(--border)}
+    .nav-links.open{transform:none}
+    .burger{display:flex}
+    .proj-grid,.skill-grid,.stats{grid-template-columns:1fr}
+    .stats{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+<div class="bg-orbs"><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div></div>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="logo" href="index.html" title="Back to home">MK<span>.</span></a>
+    <nav class="nav-links" id="navlinks">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="pill reveal"><span class="dot"></span> Open to Werkstudent / entry-level roles · Paderborn, Germany</div>
+    <h1 class="reveal">Manasvi R <span class="grad-text">Kotian</span></h1>
+    <div class="role reveal">Backend &amp; Computer Vision Engineer · M.Sc. Computer Science</div>
+    <p class="blurb reveal">I build backend systems and computer-vision / optimization solutions for real-world automation — currently developing luggage-handling and aircraft-localization systems for Paderborn-Lippstadt Airport at Fraunhofer IEM.</p>
+    <div class="cta reveal">
+      <a class="btn primary" href="#projects">View Projects →</a>
+      <a class="btn ghost" href="Manasvi_Kotian_CV.pdf" download>Download CV</a>
+      <a class="btn ghost" href="#contact">Get in touch</a>
+    </div>
+    <div class="socials reveal">
+      <a href="https://www.linkedin.com/in/manasvikotian" target="_blank" rel="noopener" title="LinkedIn">in</a>
+      <a href="mailto:kotianmanasvi98@gmail.com" title="Email">@</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="block" id="about">
+  <div class="wrap">
+    <div class="eyebrow reveal">About</div>
+    <h2 class="sec-title reveal">Engineer across backend, data &amp; vision</h2>
+    <p class="lead reveal">Backend-oriented software engineer with 2+ years of professional experience building and operating production database services, now developing microservice-based systems and computer-vision solutions for airport automation. I care about clean, well-tested code, data integrity, and turning messy real-world problems into working systems.</p>
+    <div class="stats">
+      <div class="stat reveal"><div class="num grad-text">2+</div><div class="lbl">Years professional experience</div></div>
+      <div class="stat reveal"><div class="num grad-text">4</div><div class="lbl">Airport &amp; research projects</div></div>
+      <div class="stat reveal"><div class="num grad-text">C2</div><div class="lbl">English · German B1</div></div>
+      <div class="stat reveal"><div class="num grad-text">1</div><div class="lbl">Peer-reviewed publication</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="block" id="projects">
+  <div class="wrap">
+    <div class="eyebrow reveal">Selected Work</div>
+    <h2 class="sec-title reveal">Projects</h2>
+    <p class="lead reveal">A mix of applied research at Fraunhofer IEM and earlier work — from optimization algorithms to computer vision.</p>
+    <div class="proj-grid">
+
+      <article class="card reveal">
+        <div class="tag-row"><span class="kind">Fraunhofer IEM · Thesis</span></div>
+        <h3>AG4NBA — Automated Luggage Handling</h3>
+        <p>An optimization algorithm that automates luggage packing at Paderborn-Lippstadt Airport, maximising container utilisation and driving an end-to-end system: sensor data management, luggage tracking, placement algorithms and robotic-arm integration, on a Python microservice backend with PostgreSQL.</p>
+        <span class="metric">↓ ~20% fewer bins per flight · ~30 hrs/week manual work saved</span>
+        <div class="chips"><span class="chip">Python</span><span class="chip">Optimization</span><span class="chip">Microservices</span><span class="chip">PostgreSQL</span><span class="chip">Robotics</span></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="tag-row"><span class="kind">Fraunhofer IEM</span></div>
+        <h3>FastGate — Aircraft Localisation</h3>
+        <p>A system that detects and tracks an aircraft and automates docking of the boarding bridge without human involvement, built as a set of containerised microservices with point-cloud alignment modules using Open3D and CAD-based localisation.</p>
+        <span class="metric">◎ 5–10 cm localisation accuracy · autonomous docking</span>
+        <div class="chips"><span class="chip">Python</span><span class="chip">Open3D</span><span class="chip">Docker</span><span class="chip">Point Cloud</span><span class="chip">Computer Vision</span></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="tag-row"><span class="kind">Computer Vision · Publication</span></div>
+        <h3>Non-Verbal Communication via Image Processing</h3>
+        <p>An OpenCV system that detects eye blinks through grayscale image processing for assistive communication, with face/eye detection and blink-recognition logic — the basis for a peer-reviewed publication on encrypted communication using Morse code.</p>
+        <span class="metric">★ Published in IJASRM, Vol. 7(3)</span>
+        <div class="chips"><span class="chip">Python</span><span class="chip">OpenCV</span><span class="chip">Machine Learning</span><span class="chip">Image Processing</span></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="tag-row"><span class="kind">Persistent Systems</span></div>
+        <h3>Production Database Migration &amp; Replication</h3>
+        <p>Built and operated production database backend services, running data migration and replication across SQL, MySQL, Oracle and PostgreSQL using Quest SharePlex, with a strong focus on data integrity and reliability on RHEL environments.</p>
+        <span class="metric">⚙ Enterprise-scale · SharePlex replication</span>
+        <div class="chips"><span class="chip">SQL</span><span class="chip">Oracle</span><span class="chip">PostgreSQL</span><span class="chip">SharePlex</span><span class="chip">Agile</span></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="block" id="experience">
+  <div class="wrap">
+    <div class="eyebrow reveal">Journey</div>
+    <h2 class="sec-title reveal">Experience</h2>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="when">2025 — PRESENT</div>
+        <h3>Backend Software Developer (Werkstudent)</h3>
+        <div class="org">Fraunhofer IEM · Paderborn</div>
+        <ul>
+          <li>Backend development across two Paderborn-Lippstadt Airport projects (AG4NBA &amp; FastGate).</li>
+          <li>Work across cross-functional teams — backend, sensor technology and hardware integration.</li>
+        </ul>
+      </div>
+      <div class="tl-item reveal">
+        <div class="when">2023 — 2024</div>
+        <h3>Research &amp; Teaching Assistant (Werkstudent)</h3>
+        <div class="org">Empirical Software Engineering · Paderborn University</div>
+        <ul>
+          <li>Led tutorials and guided students.</li>
+          <li>Contributed to LLM-security research and supported conference submissions &amp; publications.</li>
+        </ul>
+      </div>
+      <div class="tl-item reveal">
+        <div class="when">2021 — 2022</div>
+        <h3>Software Engineer (Full-Time)</h3>
+        <div class="org">Persistent Systems · Pune, India</div>
+        <ul>
+          <li>Built and operated production database services (migration &amp; replication, Quest SharePlex).</li>
+          <li>Delivered iteratively in an Agile team using Jira and Confluence.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="block" id="skills">
+  <div class="wrap">
+    <div class="eyebrow reveal">Toolbox</div>
+    <h2 class="sec-title reveal">Skills</h2>
+    <div class="skill-grid">
+      <div class="skill-cat reveal"><h4>Programming</h4><div class="chips"><span class="chip">Python</span><span class="chip">Java</span><span class="chip">SQL</span><span class="chip">JavaScript</span><span class="chip">HTML</span></div></div>
+      <div class="skill-cat reveal"><h4>Backend &amp; APIs</h4><div class="chips"><span class="chip">REST APIs</span><span class="chip">FastAPI</span><span class="chip">Microservices</span><span class="chip">Async processing</span><span class="chip">Distributed systems</span></div></div>
+      <div class="skill-cat reveal"><h4>AI &amp; Computer Vision</h4><div class="chips"><span class="chip">Machine Learning</span><span class="chip">OpenCV</span><span class="chip">Open3D</span><span class="chip">Point Clouds</span><span class="chip">Image Processing</span></div></div>
+      <div class="skill-cat reveal"><h4>Databases</h4><div class="chips"><span class="chip">PostgreSQL</span><span class="chip">MySQL</span><span class="chip">Oracle</span><span class="chip">Migration &amp; Replication</span><span class="chip">SharePlex</span></div></div>
+      <div class="skill-cat reveal"><h4>Testing &amp; QA</h4><div class="chips"><span class="chip">Postman</span><span class="chip">Karate</span><span class="chip">TDD</span><span class="chip">Code Reviews</span></div></div>
+      <div class="skill-cat reveal"><h4>Tools &amp; DevOps</h4><div class="chips"><span class="chip">Docker</span><span class="chip">uv</span><span class="chip">Git</span><span class="chip">Jenkins</span><span class="chip">Kafka</span><span class="chip">Jira</span><span class="chip">Agile/Scrum</span></div></div>
+    </div>
+
+    <div class="pub reveal">
+      <div class="kind">Publication</div>
+      <h3>Encrypted Communication using Face Detection and Eye Tracking with Morse Code</h3>
+      <p>IJASRM · Volume 7, Issue 3</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="block contact" id="contact">
+  <div class="wrap">
+    <div class="eyebrow reveal">Contact</div>
+    <h2 class="sec-title reveal">Let's build something</h2>
+    <p class="lead reveal" style="margin:0 auto">Open to Werkstudent, thesis and entry-level engineering roles across the EU. The fastest way to reach me is email or LinkedIn.</p>
+    <div class="cta reveal" style="justify-content:center">
+      <a class="btn primary" href="mailto:kotianmanasvi98@gmail.com">Email me</a>
+      <a class="btn ghost" href="https://www.linkedin.com/in/manasvikotian" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© <span id="year"></span> Manasvi R Kotian · Built with care in Paderborn.</div>
+</footer>
+
+<script>
+  // nav scroll state
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20));
+  // mobile menu
+  const burger = document.getElementById('burger'), links = document.getElementById('navlinks');
+  burger.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDelay = (i%5*60) + 'ms'; io.observe(el); });
+  // active nav link
+  const secs = [...document.querySelectorAll('section[id]')];
+  const navA = [...document.querySelectorAll('.nav-links a')];
+  addEventListener('scroll', () => {
+    let cur = secs[0].id;
+    for (const s of secs) if (scrollY >= s.offsetTop - 120) cur = s.id;
+    navA.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+  });
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
